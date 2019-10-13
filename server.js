@@ -19,4 +19,4 @@ app.use("/api/posts", require("./routes/api/posts"));
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => console.log(`Shabkeen 3a Port ${PORT} ya 3asal ;)`));
+app.listen(PORT, () => console.log(`Server Connected | Port ${PORT}`));
