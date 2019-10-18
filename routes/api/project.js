@@ -31,6 +31,7 @@ router.post(
     const {
       name,
       location,
+      numberOfUnits,
       client,
       contractor,
       projectManager,
@@ -42,6 +43,7 @@ router.post(
 
     if (name) projectFields.name = name;
     if (location) projectFields.location = location;
+    if (numberOfUnits) projectFields.numberOfUnits = numberOfUnits;
     if (client) projectFields.client = client;
     if (contractor) projectFields.contractor = contractor;
     if (projectManager) projectFields.projectManager = projectManager;
