@@ -1,15 +1,12 @@
 const express = require("express");
-const router = express.Router();
 const { check, validationResult } = require("express-validator");
-const auth = require("../../middleware/auth");
+const router = express.Router();
 
-const Post = require("../../models/Unit");
-const Profile = require("../../models/Project");
-const User = require("../../models/User");
+const Unit = require("../../models/Unit");
 
 // @route    POST api/unit
 // @desc     Post a unit
-// @access   Private
+// @access   Public
 router.post(
   "/:id",
   [
@@ -45,5 +42,18 @@ router.post(
     }
   }
 );
+
+// @route    GET api/unit
+// @desc     Get all units
+// @access   Public
+router.get("/", async (req, res) => {
+  try {
+    const units = await Unit.find().populate("project", ["name"]);
+    res.json(units);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;

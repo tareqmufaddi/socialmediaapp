@@ -1,14 +1,34 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema; 
+const Schema = mongoose.Schema;
 
 const SubmittalSchema = new Schema({
-    project: {
-        type: Schema.Types.ObjectId, 
-        ref: "project"
-    }, 
-    unit: [{
-        type: Schema.Types.ObjectId, 
-        ref: "unit"
-    }],
-    from: 
-})
+  unit: {
+    type: Schema.Types.ObjectId,
+    ref: "unit"
+  },
+  serial: {
+    type: Number,
+    unique: true,
+    required: true
+  },
+  from: {
+    type: String,
+    required: true
+  },
+  to: {
+    type: String,
+    required: true
+  },
+  submitted: {
+    type: Date
+  },
+  received: {
+    type: Date
+  },
+  revision: {
+    type: Number,
+    required: true
+  }
+});
+
+module.exports = Submittal = mongoose.model("submittal", SubmittalSchema);
