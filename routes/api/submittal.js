@@ -9,7 +9,7 @@ const Unit = require("../../models/Unit");
 // @desc     Get all units
 // @access   Public
 router.post(
-  "/:id",
+  "/",
   [
     check("from", "Sender of document needs to be identified")
       .not()
@@ -24,18 +24,10 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { from, serial, to, revision, submitted, received } = req.body;
-
-    const subFields = {};
-    subFields.unit = req.params.id;
-    if (from) subFields.from = from;
-    if (to) subFields.to = to;
-    if (revision) subFields.revision = revision;
-    if (submitted) subFields.submitted = submitted;
-    if (received) subFields.received = received;
+    const { linkUnits, docID, to, revision, submitted, received } = req.body;
 
     try {
-      const unit = await Unit.findById(req.params.id);
+      const unit = await Unit.findOne({ id: { $in: ids } });
       const submittal = await Submittal.findOneAndUpdate(
         { serial: req.body.serial },
         { $set: subFields },

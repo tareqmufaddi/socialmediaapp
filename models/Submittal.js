@@ -2,12 +2,12 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const SubmittalSchema = new Schema({
-  unit: {
+  linkUnits: {
     type: Schema.Types.ObjectId,
     ref: "unit"
   },
-  serial: {
-    type: Number,
+  docID: {
+    type: String,
     unique: true,
     required: true
   },
@@ -19,12 +19,14 @@ const SubmittalSchema = new Schema({
     type: String,
     required: true
   },
-  submitted: {
-    type: Date
-  },
-  received: {
-    type: Date
-  },
+  // submitted: {
+  //   type: Date,
+  //   required: true
+  // },
+  // received: {
+  //   type: Date,
+  //   required: true
+  // },
   revision: {
     type: Number,
     required: true
