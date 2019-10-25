@@ -20,7 +20,7 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { name, numberOfStops, capacity, speed } = req.body;
+    const { numberOfStops, capacity, speed } = req.body;
 
     const unitFields = {};
     unitFields.project = req.params.id;
@@ -29,7 +29,6 @@ router.post(
     if (speed) unitFields.speed = speed;
 
     try {
-      const project = await Project.findById(req.params.id);
       const unit = await Unit.findOneAndUpdate(
         { name: req.body.name },
         { $set: unitFields },

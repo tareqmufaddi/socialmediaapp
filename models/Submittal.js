@@ -2,9 +2,9 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const SubmittalSchema = new Schema({
-  linkUnits: {
+  project: {
     type: Schema.Types.ObjectId,
-    ref: "unit"
+    ref: "project"
   },
   docID: {
     type: String,
@@ -19,14 +19,16 @@ const SubmittalSchema = new Schema({
     type: String,
     required: true
   },
-  // submitted: {
-  //   type: Date,
-  //   required: true
-  // },
-  // received: {
-  //   type: Date,
-  //   required: true
-  // },
+  submitted: {
+    type: Date,
+    default: Date.now
+    // required: true
+  },
+  received: {
+    type: Date,
+    default: Date.now
+    // required: true
+  },
   revision: {
     type: Number,
     required: true

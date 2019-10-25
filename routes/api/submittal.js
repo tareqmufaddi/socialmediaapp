@@ -3,18 +3,23 @@ const router = express.Router();
 const { check, validationResult } = require("express-validator");
 
 const Submittal = require("../../models/Submittal");
-const Unit = require("../../models/Unit");
 
 // @route    POST api/submittal
 // @desc     Get all units
 // @access   Public
 router.post(
-  "/",
+  "/:id", //project id
   [
-    check("from", "Sender of document needs to be identified")
+    check("docID", "Submittal requires an ID")
+      .not()
+      .isEmpty(),
+    check("from", "Sender needs to be identified")
       .not()
       .isEmpty(),
     check("to", "Receiver needs to be identified")
+      .not()
+      .isEmpty(),
+    check("revision", "Revision number missing")
       .not()
       .isEmpty()
   ],
@@ -24,12 +29,20 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { linkUnits, docID, to, revision, submitted, received } = req.body;
+    const { docID, from, to, revision, submitted, received } = req.body;
+
+    const subFields = {};
+    subFields.project = req.params.id;
+    subFields.docID = docID;
+    subFields.from = from;
+    subFields.to = to;
+    subFields.revision = revision;
+    if (submitted) subFields.submitted = submitted;
+    if (received) subFields.received = received;
 
     try {
-      const unit = await Unit.findOne({ id: { $in: ids } });
       const submittal = await Submittal.findOneAndUpdate(
-        { serial: req.body.serial },
+        { docID: req.body.docID },
         { $set: subFields },
         { new: true, upsert: true }
       );
