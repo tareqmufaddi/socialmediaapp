@@ -11,6 +11,12 @@ const SubmittalSchema = new Schema({
     unique: true,
     required: true
   },
+  unitLink: [
+    {
+      type: Schema.Types.ObjectId,
+      ref: "unit"
+    }
+  ],
   from: {
     type: String,
     required: true

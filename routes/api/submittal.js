@@ -3,6 +3,7 @@ const router = express.Router();
 const { check, validationResult } = require("express-validator");
 
 const Submittal = require("../../models/Submittal");
+const Unit = require("../../models/Unit");
 
 // @route    POST api/submittal
 // @desc     Get all units
@@ -29,13 +30,22 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { docID, from, to, revision, submitted, received } = req.body;
+    const {
+      docID,
+      from,
+      to,
+      revision,
+      unitLink,
+      submitted,
+      received
+    } = req.body;
 
     const subFields = {};
     subFields.project = req.params.id;
     subFields.docID = docID;
     subFields.from = from;
     subFields.to = to;
+    subFields.unitLink = unitLink;
     subFields.revision = revision;
     if (submitted) subFields.submitted = submitted;
     if (received) subFields.received = received;
@@ -53,5 +63,15 @@ router.post(
     }
   }
 );
+
+router.get("/", async (req, res) => {
+  try {
+    const submittals = await Submittal.find().populate("unitLink", ["name"]);
+    res.json(submittals);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
