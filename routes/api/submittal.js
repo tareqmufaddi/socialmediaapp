@@ -64,6 +64,9 @@ router.post(
   }
 );
 
+// @route    POST api/submittal
+// @desc     Get all submittals
+// @access   Public
 router.get("/", async (req, res) => {
   try {
     const submittals = await Submittal.find().populate("unitLink", ["name"]);
