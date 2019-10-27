@@ -80,14 +80,14 @@ router.get("/", async (req, res) => {
 // @route    GET api/submittal/:id
 // @desc     Get submittal by unit ID
 // @access   Public
-router.get("/:id", async (req, res) => {
-  try {
-    const submittals = Submittal.findOne({ "unitLink._id": req.params.id });
-    res.json(submittals);
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send("Server Error");
-  }
-});
+// router.get("/:id", async (req, res) => {
+//   try {
+//     const submittals = Submittal.findOne({ "submittal.unitLink._id": req.params.id });
+//     res.json(submittals);
+//   } catch (err) {
+//     console.error(err.message);
+//     res.status(500).send("Server Error");
+//   }
+// });
 
 module.exports = router;
