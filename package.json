@@ -5,13 +5,16 @@
   "main": "server.js",
   "scripts": {
     "start": "node server",
-    "server": "nodemon server"
+    "server": "nodemon server",
+    "client": "npm start --prefix client",
+    "dev": "concurrently \"npm run server\" \"npm run client\""
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "config": "^3.2.2",
+    "create-react-app": "^3.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.2.0",
     "gravatar": "^1.8.0",
@@ -22,5 +25,13 @@
   "devDependencies": {
     "concurrently": "^4.1.2",
     "nodemon": "^1.19.3"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tareqmufaddi/socialmediaapp.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tareqmufaddi/socialmediaapp/issues"
+  },
+  "homepage": "https://github.com/tareqmufaddi/socialmediaapp#readme"
 }
