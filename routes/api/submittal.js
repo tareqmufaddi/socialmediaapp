@@ -64,12 +64,25 @@ router.post(
   }
 );
 
-// @route    POST api/submittal
+// @route    GET api/submittal
 // @desc     Get all submittals
 // @access   Public
 router.get("/", async (req, res) => {
   try {
     const submittals = await Submittal.find().populate("unitLink", ["name"]);
+    res.json(submittals);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route    GET api/submittal/:id
+// @desc     Get submittal by unit ID
+// @access   Public
+router.get("/:id", async (req, res) => {
+  try {
+    const submittals = Submittal.findOne({ "unitLink._id": req.params.id });
     res.json(submittals);
   } catch (err) {
     console.error(err.message);
