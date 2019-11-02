@@ -7,5 +7,15 @@ import { GET_PROJECT, PROJECT_ERROR } from "./types";
 export const getProject = () => async dispatch => {
   try {
     const res = await axios.get("api/project/");
-  } catch (err) {}
+
+    dispatch({
+      type: GET_PROJECT,
+      payload: res.data
+    });
+  } catch (err) {
+    dispatch({
+      type: PROJECT_ERROR,
+      payload: { msg: err.response.statusText, status: err.response.status }
+    });
+  }
 };
