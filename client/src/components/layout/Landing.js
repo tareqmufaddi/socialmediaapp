@@ -6,10 +6,10 @@ const Landing = () => {
     <section className="landing">
       <div className="dark-overlay">
         <div className="landing-inner">
-          <h1 className="x-large">Developer Connector</h1>
+          <h1 className="x-large">UnitView</h1>
           <p className="lead">
-            Create a developer profile/portfolio, share posts and get help from
-            other developers
+            A distributed Document Control Management System,
+            <br /> desgined to track data flow at a unit level
           </p>
           <div className="buttons">
             <Link to="/register" className="btn btn-primary">
