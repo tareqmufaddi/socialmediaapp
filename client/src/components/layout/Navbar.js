@@ -19,9 +19,6 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
   const guestLinks = (
     <ul>
       <li>
-        <a href="#!">Developers</a>
-      </li>
-      <li>
         <Link to="/register">Register</Link>
       </li>
       <li>
@@ -34,7 +31,7 @@ const Navbar = ({ auth: { isAuthenticated, loading }, logout }) => {
     <nav className="navbar bg-dark">
       <h1>
         <Link to="/">
-          <i className="fas fa-code"></i> UnitView
+          <i className="fas fa-street-view"></i> UnitView
         </Link>
       </h1>
       {!loading && (
