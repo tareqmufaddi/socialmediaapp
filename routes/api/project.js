@@ -5,8 +5,6 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
-const Project = require("../../models/Project");
-
 // @route   POST api/project
 // @desc    Add a project
 // @access  Private

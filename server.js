@@ -1,15 +1,12 @@
 const express = require("express");
-const connectDB = require("./config/db");
+var pool = require("./config/db");
 
 const app = express();
-
-// Connect Database
-connectDB();
 
 // Init Middleware, to get req.body in user authentication (email, password, etc.)
 app.use(express.json({ extended: false }));
 
-app.get("/", (req, res) => res.send("el API Shaghal mallion"));
+app.get("/", (req, res) => res.send("el API Shaghal"));
 
 // Define Routes
 app.use("/api/users", require("./routes/api/users"));

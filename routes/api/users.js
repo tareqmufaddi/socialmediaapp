@@ -6,7 +6,22 @@ const jwt = require("jsonwebtoken");
 const config = require("config");
 const { check, validationResult } = require("express-validator");
 
-const User = require("../../models/User");
+var pool = require("../../config/db");
+
+// @route   GET api/users
+// @desc    get all users
+//access    public
+
+router.get("/", async (req, res) => {
+  try {
+    pool.query("SELECT * FROM users", (q_err, q_res) => {
+      res.json(q_res.rows);
+    });
+  } catch (q_err) {
+    console.log(q_err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 // @rout    POST api/users
 // @desc    Register user

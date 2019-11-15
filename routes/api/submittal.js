@@ -2,9 +2,6 @@ const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
 
-const Submittal = require("../../models/Submittal");
-const Unit = require("../../models/Unit");
-
 // @route    POST api/submittal
 // @desc     Get all units
 // @access   Public

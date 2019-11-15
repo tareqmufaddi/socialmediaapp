@@ -1,4 +1,3 @@
 {
-  "mongoURI": "mongodb+srv://tareqmufaddi:tamu4740@cluster0-kgllt.mongodb.net/test?retryWrites=true&w=majority",
   "jwtSecret": "secret"
 }
