@@ -43,45 +43,35 @@ router.post(
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
     const { name, email, password } = req.body;
+    const values = [name, email, password];
 
     try {
       // See if user exists
-      let user = await User.findOne({ email });
-
-      if (user) {
+      let user = await pool.query(`SELECT * FROM users WHERE name=$1`, [name]);
+      // let user = await User.findOne({ email });
+      if (user.rows[0]) {
         return res
           .status(400)
           .json({ errors: [{ msg: "User already exists" }] });
       }
-      // Get users gravatar
 
-      const avatar = gravatar.url(email, {
-        s: "200",
-        r: "pg",
-        d: "mm"
-      });
-
-      user = new User({
-        name,
-        email,
-        avatar,
-        password
-      });
-
+      //await user.save();
       // Encrypt password
       const salt = await bcrypt.genSalt(10);
 
-      user.password = await bcrypt.hash(password, salt);
+      values[2] = await bcrypt.hash(password, salt);
 
-      await user.save();
+      let new_user = await pool.query(
+        `INSERT INTO users(name, email, password) VALUES ($1, $2, $3)`,
+        values
+      );
 
       // Return jsonwebtoken
 
       const payload = {
         user: {
-          id: user.id
+          id: new_user.user_id
         }
       };
 
