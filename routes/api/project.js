@@ -5,6 +5,8 @@ const router = express.Router();
 const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
+const pool = require("../../config/db");
+
 // @route   POST api/project
 // @desc    Add a project
 // @access  Private
@@ -29,29 +31,35 @@ router.post(
     const {
       name,
       location,
-      numberOfUnits,
+      numberofunits,
       client,
       contractor,
-      projectManager,
+      projectmanager,
       engineer
     } = req.body;
 
-    const projectFields = {};
-    projectFields.user = req.user.id;
+    const projectFields = [];
+    //projectFields.user = req.user.rows[0].user_id;
 
-    if (name) projectFields.name = name;
-    if (location) projectFields.location = location;
-    if (numberOfUnits) projectFields.numberOfUnits = numberOfUnits;
-    if (client) projectFields.client = client;
-    if (contractor) projectFields.contractor = contractor;
-    if (projectManager) projectFields.projectManager = projectManager;
-    if (engineer) projectFields.engineer = engineer;
+    if (name) projectFields[0] = name;
+    if (location) projectFields[1] = location;
+    if (numberofunits) projectFields[2] = numberofunits;
+    if (client) projectFields[3] = client;
+    if (contractor) projectFields[4] = contractor;
+    if (projectmanager) projectFields[5] = projectmanager;
+    if (engineer) projectFields[6] = engineer;
 
     try {
-      let project = await Project.findOneAndUpdate(
-        { user: req.user.id },
-        { $set: projectFields },
-        { new: true, upsert: true }
+      let project = await pool.query(
+        `INSERT INTO projects(
+                      name, 
+                      location, 
+                      numberofunits,
+                      client,
+                      contractor,
+                      projectmanager,
+                      engineer) VALUES($1, $2, $3, $4, $5, $6, $7)`,
+        projectFields
       );
       res.json(project);
     } catch (err) {
@@ -67,8 +75,8 @@ router.post(
 
 router.get("/", auth, async (req, res) => {
   try {
-    const projects = await Project.find();
-    res.json(projects);
+    const projects = await pool.query("SELECT * FROM projects");
+    res.json(projects.rows);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

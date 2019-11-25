@@ -2,7 +2,6 @@ import { GET_PROJECT, PROJECT_ERROR } from "../actions/types";
 
 const initialState = {
   project: null,
-  projects: [],
   loading: true,
   error: {}
 };
