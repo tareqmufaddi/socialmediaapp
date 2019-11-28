@@ -52,13 +52,13 @@ router.post(
     try {
       let project = await pool.query(
         `INSERT INTO projects(
-                      name, 
-                      location, 
-                      numberofunits,
-                      client,
-                      contractor,
-                      projectmanager,
-                      engineer) VALUES($1, $2, $3, $4, $5, $6, $7)`,
+          name, 
+          location, 
+          numberofunits,
+          client,
+          contractor,
+          projectmanager,
+          engineer) VALUES($1, $2, $3, $4, $5, $6, $7)`,
         projectFields
       );
       res.json(project);

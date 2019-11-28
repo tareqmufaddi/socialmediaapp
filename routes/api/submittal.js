@@ -1,23 +1,29 @@
 const express = require("express");
 const router = express.Router();
 const { check, validationResult } = require("express-validator");
+const auth = require("../../middleware/auth");
+const pool = require("../../config/db");
 
 // @route    POST api/submittal
 // @desc     Get all units
 // @access   Public
 router.post(
-  "/:id", //project id
+  "/",
+  auth, //project_name id
   [
-    check("docID", "Submittal requires an ID")
+    check("doc_id", "Submittal requires an ID")
       .not()
       .isEmpty(),
-    check("from", "Sender needs to be identified")
+    check("unit_id", "effected unit equired")
       .not()
       .isEmpty(),
-    check("to", "Receiver needs to be identified")
+    check("rev", "rev number missing")
       .not()
       .isEmpty(),
-    check("revision", "Revision number missing")
+    check("sender", "Sender needs to be identified")
+      .not()
+      .isEmpty(),
+    check("receiver", "Receiver needs to be identified")
       .not()
       .isEmpty()
   ],
@@ -28,30 +34,45 @@ router.post(
     }
 
     const {
-      docID,
-      from,
-      to,
-      revision,
-      unitLink,
+      doc_id,
+      unit_id,
+      rev,
       submitted,
-      received
+      received,
+      closed,
+      superceded,
+      sender,
+      receiver,
+      project_name
     } = req.body;
 
-    const subFields = {};
-    subFields.project = req.params.id;
-    subFields.docID = docID;
-    subFields.from = from;
-    subFields.to = to;
-    subFields.unitLink = unitLink;
-    subFields.revision = revision;
-    if (submitted) subFields.submitted = submitted;
-    if (received) subFields.received = received;
+    const subFields = [];
+    //subFields.project_name = req.params.project_name;
+    if (doc_id) subFields[0] = doc_id;
+    if (unit_id) subFields[1] = unit_id;
+    if (rev) subFields[2] = rev;
+    if (submitted) subFields[3] = submitted;
+    if (received) subFields[4] = received;
+    if (closed) subFields[5] = closed;
+    if (superceded) subFields[6] = superceded;
+    if (sender) subFields[7] = sender;
+    if (receiver) subFields[8] = receiver;
+    if (project_name) subFields[9] = project_name;
 
     try {
-      const submittal = await Submittal.findOneAndUpdate(
-        { docID: req.body.docID },
-        { $set: subFields },
-        { new: true, upsert: true }
+      let submittal = await pool.query(
+        `INSERT INTO submittals(
+          doc_id,
+          unit_id,
+          rev,
+          submitted,
+          received,
+          closed,
+          superceded, 
+          sender,
+          receiver,
+          project_name) VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)`,
+        subFields
       );
       res.json(submittal);
     } catch (err) {
@@ -66,8 +87,7 @@ router.post(
 // @access   Public
 router.get("/", async (req, res) => {
   try {
-    const submittals = await Submittal.find().populate("unitLink", ["name"]);
-    res.json(submittals);
+    const submittals = await res.json(submittals);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
@@ -79,7 +99,7 @@ router.get("/", async (req, res) => {
 // @access   Public
 // router.get("/:id", async (req, res) => {
 //   try {
-//     const submittals = Submittal.findOne({ "submittal.unitLink._id": req.params.id });
+//     const submittals = Submittal.findOne({ "submittal.unit_id._id": req.params.id });
 //     res.json(submittals);
 //   } catch (err) {
 //     console.error(err.message);
