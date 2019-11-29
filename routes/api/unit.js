@@ -1,14 +1,18 @@
 const express = require("express");
 const { check, validationResult } = require("express-validator");
 const router = express.Router();
+const auth = require("../../middleware/auth");
+
+const pool = require("../../config/db");
 
 // @route    POST api/unit
 // @desc     Post a unit
 // @access   Public
 router.post(
-  "/:id",
+  "/:project",
+  auth,
   [
-    check("name", "Unit identifier is required")
+    check("unit_id", "Unit identifier is required")
       .not()
       .isEmpty()
   ],
@@ -18,19 +22,24 @@ router.post(
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { numberOfStops, capacity, speed } = req.body;
+    const { unit_id, landings, speed, capacity } = req.body;
 
-    const unitFields = {};
-    unitFields.project = req.params.id;
-    if (numberOfStops) unitFields.numberOfStops = numberOfStops;
-    if (capacity) unitFields.capacity = capacity;
-    if (speed) unitFields.speed = speed;
-
+    const unitFields = [];
+    unitFields[0] = req.params.project;
+    unitFields[1] = unit_id;
+    unitFields[2] = landings;
+    unitFields[3] = speed;
+    unitFields[4] = capacity;
+    //res.json(unitFields);
     try {
-      const unit = await Unit.findOneAndUpdate(
-        { name: req.body.name },
-        { $set: unitFields },
-        { new: true, upsert: true }
+      const unit = await pool.query(
+        `INSERT INTO units(
+        project,
+        unit_id,
+        landings,
+        speed,
+        capacity) VALUES($1, $2, $3, $4, $5)`,
+        unitFields
       );
       res.json(unit);
     } catch (err) {
@@ -42,11 +51,29 @@ router.post(
 
 // @route    GET api/unit
 // @desc     Get all units
-// @access   Public
-router.get("/", async (req, res) => {
+// @access   Private
+router.get("/", auth, async (req, res) => {
   try {
-    const units = await Unit.find().populate("project", ["name"]);
-    res.json(units);
+    const units = await pool.query("SELECT * FROM units");
+    res.json(units.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
+// @route   GET api/unit/
+// @desc    Get unit by unit_id
+// @access  Private
+
+router.get("/unit", auth, async (req, res) => {
+  try {
+    const unit_id = req.query.unit_id;
+    const unit_byid = await pool.query(
+      `SELECT * FROM units WHERE unit_id = $1`,
+      [unit_id]
+    );
+    res.json(unit_byid.rows);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");

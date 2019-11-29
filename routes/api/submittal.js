@@ -85,26 +85,33 @@ router.post(
 // @route    GET api/submittal
 // @desc     Get all submittals
 // @access   Public
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
-    const submittals = await res.json(submittals);
+    const submittals = await pool.query("SELECT * FROM submittals");
+    res.json(submittals.rows);
   } catch (err) {
     console.error(err.message);
     res.status(500).send("Server Error");
   }
 });
 
-// @route    GET api/submittal/:id
-// @desc     Get submittal by unit ID
-// @access   Public
-// router.get("/:id", async (req, res) => {
-//   try {
-//     const submittals = Submittal.findOne({ "submittal.unit_id._id": req.params.id });
-//     res.json(submittals);
-//   } catch (err) {
-//     console.error(err.message);
-//     res.status(500).send("Server Error");
-//   }
-// });
+// @route   GET api/submittal
+// @desc    Get submittal by unit_id
+// @access  provate
+
+router.get("/unit", auth, async (req, res) => {
+  try {
+    const unit_id = req.query.unit_id;
+    //res.json(unit_id);
+    const unit_submittals = await pool.query(
+      `SELECT * FROM submittals WHERE unit_id = $1`,
+      [unit_id]
+    );
+    res.json(unit_submittals.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
 
 module.exports = router;
