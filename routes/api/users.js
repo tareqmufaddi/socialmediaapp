@@ -4,6 +4,7 @@ const gravatar = require("gravatar");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const config = require("config");
+const auth = require("../../middleware/auth");
 const { check, validationResult } = require("express-validator");
 
 var pool = require("../../config/db");
@@ -12,11 +13,10 @@ var pool = require("../../config/db");
 // @desc    get all users
 //access    public
 
-router.get("/", async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
-    pool.query("SELECT * FROM users", (q_err, q_res) => {
-      res.json(q_res.rows);
-    });
+    const users = await pool.query("SELECT * FROM users");
+    res.json(users.rows);
   } catch (q_err) {
     console.log(q_err.message);
     res.status(500).send("Server Error");
@@ -86,7 +86,7 @@ router.post(
       );
     } catch (err) {
       console.error(err.message);
-      res.status(500).send("El Server 6abbal!");
+      res.status(500).send("Server Error");
     }
   }
 );
