@@ -1,8 +1,10 @@
 import React, { Fragment, useState } from "react";
+import { Link, withRouter } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { createProject } from "../../actions/project";
 
-const CreateProject = props => {
+const CreateProject = ({ createProject, history }) => {
   const [projectData, setProjectData] = useState({
     name: "",
     numberofunits: "",
@@ -24,7 +26,12 @@ const CreateProject = props => {
   } = projectData;
 
   const onChange = e =>
-    setFormData({ ...projectData, [e.target.name]: e.target.value });
+    setProjectData({ ...projectData, [e.target.name]: e.target.value });
+
+  const onSubmit = e => {
+    e.preventDefault();
+    createProject(projectData, history);
+  };
 
   return (
     <Fragment>
@@ -33,7 +40,7 @@ const CreateProject = props => {
         <i className="fas fa-user"></i> Please insert the following project
         fields
       </p>
-      <form className="form">
+      <form className="form" onSubmit={e => onSubmit(e)}>
         <div className="form-group">
           <input
             type="text"
@@ -106,6 +113,8 @@ const CreateProject = props => {
   );
 };
 
-CreateProject.propTypes = {};
+CreateProject.propTypes = {
+  createProject: PropTypes.func.isRequired
+};
 
-export default CreateProject;
+export default connect(null, { createProject })(withRouter(CreateProject));

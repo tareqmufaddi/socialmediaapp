@@ -22,3 +22,42 @@ export const getProject = () => async dispatch => {
     });
   }
 };
+
+// Create a project
+
+export const createProject = (
+  projectData,
+  history,
+  edit = false
+) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        "Content-Type": "application/json"
+      }
+    };
+
+    const res = await axios.post("/api/project", projectData, config);
+
+    dispatch({
+      type: GET_PROJECT,
+      payload: res.data
+    });
+    dispatch(setAlert("Project Created", "success"));
+    history.push("/dashboard");
+  } catch (err) {
+    const errors = err.response.data.errors;
+
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, "danger")));
+    }
+
+    dispatch({
+      type: PROJECT_ERROR,
+      payload: {
+        msg: err.response.statusText,
+        status: err.response.status
+      }
+    });
+  }
+};

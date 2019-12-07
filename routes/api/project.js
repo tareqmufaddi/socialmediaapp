@@ -18,7 +18,7 @@ router.post(
     check("name", "Project name is required")
       .not()
       .isEmpty(),
-    check("client", "Second party is required")
+    check("client", "Client is required")
       .not()
       .isEmpty()
   ],
