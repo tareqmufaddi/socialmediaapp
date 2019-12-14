@@ -4,12 +4,13 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import Spinner from "../layout/Spinner";
 import { getProject } from "../../actions/project";
+import Projects from "./Projects";
 
 //racfp
 const Dashboard = ({
   getProject,
   auth: { user },
-  project: { project, loading }
+  project: { allProjects, loading }
 }) => {
   useEffect(() => {
     getProject();
@@ -17,7 +18,7 @@ const Dashboard = ({
 
   // if the project is null and it is still loading, we want to show to spinner/ else => <Fragment>...
 
-  return loading && project === null ? (
+  return loading && allProjects === null ? (
     <Spinner />
   ) : (
     <Fragment>
@@ -26,8 +27,11 @@ const Dashboard = ({
         <i className="fas fa-user"> Welcome {user && user.name} </i>
       </p>
       <Link to="/create-project" className="btn btn-primary my-1">
-        Create Project
+        Create New Project
       </Link>
+      <Fragment>
+        <Projects allProjects={allProjects} />
+      </Fragment>
     </Fragment>
   );
 };

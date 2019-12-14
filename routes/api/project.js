@@ -50,7 +50,7 @@ router.post(
     if (engineer) projectFields[6] = engineer;
 
     try {
-      let project = await pool.query(
+      let projects = await pool.query(
         `INSERT INTO projects(
           name, 
           location, 
@@ -61,7 +61,7 @@ router.post(
           engineer) VALUES($1, $2, $3, $4, $5, $6, $7)`,
         projectFields
       );
-      res.json(project);
+      res.json(projects.rows);
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
