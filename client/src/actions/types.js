@@ -10,3 +10,4 @@ export const LOGOUT = "LOGOUT";
 //myProject
 export const GET_PROJECT = "GET_PROJECT";
 export const PROJECT_ERROR = "PROJECT_ERROR";
+export const GET_UNITS = "GET_UNITS";

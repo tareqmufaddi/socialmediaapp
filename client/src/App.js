@@ -8,6 +8,7 @@ import Alert from "./components/layout/Alert";
 import Dashboard from "./components/dashboard/Dashboard";
 import CreateProject from "./components/project-forms/CreateProject";
 import PrivateRoute from "./components/routing/PrivateRoute";
+import ViewProject from "./components/dashboard/ViewProject";
 // Redux
 import { Provider } from "react-redux";
 import store from "./store";
@@ -41,6 +42,11 @@ const App = () => {
                 exact
                 path="/create-project"
                 component={CreateProject}
+              />
+              <PrivateRoute
+                exact
+                path="/:projectname"
+                component={ViewProject}
               />
             </Switch>
           </section>

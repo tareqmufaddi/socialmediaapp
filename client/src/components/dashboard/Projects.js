@@ -1,11 +1,14 @@
 import React, { Fragment } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 
 const Projects = ({ allProjects }) => {
   const compprojects = allProjects.map(proj => (
     <tr key={proj.name}>
-      <td>{proj.name}</td>
+      <td>
+        <Link to={`/${proj.name}`}>{proj.name}</Link>
+      </td>
       <td>{proj.numberofunits}</td>
       <td>{proj.location}</td>
       <td>{proj.client}</td>
