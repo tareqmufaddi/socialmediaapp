@@ -6,11 +6,12 @@ import { getUnits } from "../../actions/units";
 const ViewProject = ({
   getUnits,
   auth: { user },
-  project: { allUnits, loading }
+  project: { allUnits, loading },
+  match
 }) => {
   useEffect(() => {
-    getUnits();
-  }, []);
+    getUnits(match.params.projectname);
+  }, [getUnits, match.params.projectname]);
 
   const projectUnits = allUnits.map(unit => (
     <tr key={unit.unit_id}>

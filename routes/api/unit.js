@@ -80,4 +80,19 @@ router.get("/unit", auth, async (req, res) => {
   }
 });
 
+router.get("/:project", auth, async (req, res) => {
+  try {
+    const project_id = req.params.project;
+    //res.json(project_id);
+    const project_byid = await pool.query(
+      `SELECT * FROM units WHERE project = $1`,
+      [project_id]
+    );
+    res.json(project_byid.rows);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send("Server Error");
+  }
+});
+
 module.exports = router;

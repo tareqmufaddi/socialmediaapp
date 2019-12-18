@@ -3,9 +3,9 @@ import { setAlert } from "./alert";
 
 import { GET_UNITS, PROJECT_ERROR } from "./types";
 
-export const getUnits = () => async dispatch => {
+export const getUnits = projectname => async dispatch => {
   try {
-    const res = await axios.get("api/unit");
+    const res = await axios.get(`api/unit/${projectname}`);
 
     dispatch({
       type: GET_UNITS,
