@@ -7,7 +7,7 @@ const Projects = ({ allProjects }) => {
   const compprojects = allProjects.map(proj => (
     <tr key={proj.name}>
       <td>
-        <Link to={`/${proj.name}`}>{proj.name}</Link>
+        <Link to={`${proj.name}`}>{proj.name}</Link>
       </td>
       <td>{proj.numberofunits}</td>
       <td>{proj.location}</td>

@@ -1,14 +1,12 @@
 import axios from "axios";
-import { setAlert } from "./alert";
 
-import { GET_UNITS, PROJECT_ERROR } from "./types";
+import { GET_SUBMITTALS, PROJECT_ERROR } from "./types";
 
-export const getUnits = projectname => async dispatch => {
+export const getSubmittals = unit_id => async dispatch => {
   try {
-    const res = await axios.get(`/api/unit/${projectname}`);
-
+    const res = await axios.get(`/api/submittal/unit/${unit_id}`);
     dispatch({
-      type: GET_UNITS,
+      type: GET_SUBMITTALS,
       payload: res.data
     });
   } catch (err) {

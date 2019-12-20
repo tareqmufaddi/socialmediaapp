@@ -99,9 +99,9 @@ router.get("/", auth, async (req, res) => {
 // @desc    Get submittal by unit_id
 // @access  provate
 
-router.get("/unit", auth, async (req, res) => {
+router.get("/unit/:unit_id", auth, async (req, res) => {
   try {
-    const unit_id = req.query.unit_id;
+    const unit_id = req.params.unit_id;
     //res.json(unit_id);
     const unit_submittals = await pool.query(
       `SELECT * FROM submittals WHERE unit_id = $1`,

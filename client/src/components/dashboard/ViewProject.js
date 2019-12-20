@@ -1,21 +1,19 @@
 import React, { Fragment, useEffect } from "react";
+import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { getUnits } from "../../actions/units";
 
-const ViewProject = ({
-  getUnits,
-  auth: { user },
-  project: { allUnits, loading },
-  match
-}) => {
+const ViewProject = ({ getUnits, project: { allUnits, loading }, match }) => {
   useEffect(() => {
     getUnits(match.params.projectname);
   }, [getUnits, match.params.projectname]);
 
   const projectUnits = allUnits.map(unit => (
     <tr key={unit.unit_id}>
-      <td>{unit.unit_id}</td>
+      <td>
+        <Link to={`/project/${unit.unit_id}`}>{unit.unit_id}</Link>
+      </td>
       <td>{unit.landings}</td>
       <td>{unit.speed}</td>
       <td>{unit.capacity}</td>
