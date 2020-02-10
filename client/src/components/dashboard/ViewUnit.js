@@ -1,6 +1,7 @@
 import React, { Fragment, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
+import Moment from "react-moment";
 import PropTypes from "prop-types";
 import { getSubmittals } from "../../actions/submittals";
 
@@ -13,10 +14,14 @@ const ViewUnit = ({ getSubmittals, project: { allSubmittals }, match }) => {
     <tr key={submittal.doc_id}>
       <td>{submittal.doc_id}</td>
       <td>{submittal.rev}</td>
-      <td>{submittal.submitted}</td>
-      <td>{submittal.received}</td>
-      <td>{submittal.closed}</td>
-      <td>{submittal.superceded}</td>
+      <td>
+        <Moment format="YYYY/MM/DD">{submittal.submitted}</Moment>
+      </td>
+      <td>
+        <Moment format="YYYY/MM/DD">{submittal.received}</Moment>
+      </td>
+      <td>{submittal.closed.toString()}</td>
+      <td>{submittal.superceded.toString()}</td>
       <td>{submittal.sender}</td>
       <td>{submittal.receiver}</td>
     </tr>

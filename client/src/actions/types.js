@@ -12,3 +12,4 @@ export const GET_PROJECT = "GET_PROJECT";
 export const PROJECT_ERROR = "PROJECT_ERROR";
 export const GET_UNITS = "GET_UNITS";
 export const GET_SUBMITTALS = "GET_SUBMITTALS";
+export const ADD_UNIT = "ADD_UNIT";

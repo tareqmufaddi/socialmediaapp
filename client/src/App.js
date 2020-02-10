@@ -10,6 +10,7 @@ import CreateProject from "./components/project-forms/CreateProject";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import ViewProject from "./components/dashboard/ViewProject";
 import ViewUnit from "./components/dashboard/ViewUnit";
+import AddUnit from "./components/project-forms/AddUnit";
 // Redux
 import { Provider } from "react-redux";
 import store from "./store";
@@ -53,6 +54,11 @@ const App = () => {
                 exact
                 path="/project/:unit_id"
                 component={ViewUnit}
+              />
+              <PrivateRoute
+                exact
+                path="/forms/:projectname"
+                component={AddUnit}
               />
             </Switch>
           </section>

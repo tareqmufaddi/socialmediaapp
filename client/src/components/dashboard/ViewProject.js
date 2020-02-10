@@ -36,6 +36,12 @@ const ViewProject = ({ getUnits, project: { allUnits, loading }, match }) => {
         </thead>
         <tbody>{projectUnits}</tbody>
       </table>
+      <Link
+        to={`/forms/${match.params.projectname}`}
+        className="btn btn-primary my-1"
+      >
+        Add Unit
+      </Link>
     </Fragment>
   );
 };
